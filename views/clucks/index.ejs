@@ -1,0 +1,56 @@
+<%- include("../partials/header.ejs") %>
+
+<%
+const timeSince = function (dateStr) {
+
+    let diff = (new Date()) - (new Date(dateStr));
+    let unity = "";
+
+    // seconds
+    diff = Math.floor(diff / 1000);
+
+    if (diff < 60) {
+        return diff + " seconds ago";
+    }
+
+    // minutes
+    diff = Math.floor(diff / 60);
+
+    if (diff < 60) {
+        return diff + " minutes ago";
+    }
+
+    // hours
+    diff = Math.floor(diff / 60);
+
+    if (diff < 60) {
+        return diff + " hours ago";
+    }
+
+    // days
+    return Math.floor(diff / 24) + " days ago";
+};
+%>
+
+<div class="container">
+    <% clucks.forEach(function (cluck) { %>
+    <div class="card" style="margin-top: 5vh;">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-1">
+                        <img src="https://i.imgur.com/sO0CL70.gif" style="width: 100%;">
+                    </div>
+                    <div class="col-11">
+                        <strong><%= cluck.username %> • <%= timeSince(cluck.created_at) %></strong>
+                        <p><%= cluck.content %></p>
+                        <% if (cluck.image !== "") { %><img src="<%= cluck.image_url %>" style="width: 100%; max-width: 500px;"><% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+</div>
+
+<%- include("../partials/footer.ejs") %>

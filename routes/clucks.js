@@ -3,7 +3,14 @@ const knex = require("../db");
 const router = express.Router();
 
 router.get("/", function (req, res) {
-    res.send("Print all clucks by this user");
+    knex.select()
+        .from("clucks")
+        .orderBy("created_at", "DESC")
+        .then(function (results) {
+            res.render("clucks/index", {
+                clucks: results
+            });
+        });
 });
 
 router.post("/", function (req, res) {
@@ -20,7 +27,7 @@ router.post("/", function (req, res) {
         image_url: req.body.image,
         content: req.body.content
     }).into("clucks").then(function (results) {
-        res.redirect("/home");
+        res.redirect("/clucks");
     });
 });
 
