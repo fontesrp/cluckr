@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const path = require("path");
+const index = require("./routes/index");
+const clucks = require("./routes/clucks");
 
 const app = express();
 
@@ -33,39 +35,8 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get("/", function (req, res) {
-    res.send("It works!");
-});
-
-// VERB: GET, PATH: /sign_in
-app.get("/sign_in", function (req, res) {
-    res.render("sign_in", {
-        title: "Sign in"
-    });
-});
-
-// VERB: GET, PATH: /sign_out
-app.get("/sign_out", function (req, res) {
-    res.clearCookie("username");
-    res.redirect("home");
-});
-
-// 1 week
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7;
-
-// HTTP VERG: POST, PATH: /sign_in
-app.post("/sign_in", function (req, res) {
-
-    const username = req.body.username;
-
-    if (username !== undefined) {
-        res.cookie("username", username, {
-            maxAge: COOKIE_MAX_AGE
-        });
-    }
-
-    res.redirect("/home");
-});
+app.use("/", index);
+app.use("/clucks", clucks);
 
 const DOMAIN = "localhost";
 const PORT = 3002;
