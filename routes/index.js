@@ -5,7 +5,11 @@ const router = express.Router();
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7;
 
 router.get("/", function (req, res) {
-    res.send("It works!");
+    res.redirect("/home");
+});
+
+router.get("/home", function (req, res) {
+    res.redirect("/clucks");
 });
 
 // VERB: GET, PATH: /sign_in

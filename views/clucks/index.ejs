@@ -10,38 +10,62 @@ const timeSince = function (dateStr) {
     diff = Math.floor(diff / 1000);
 
     if (diff < 60) {
-        return diff + " seconds ago";
+        return "Just now";
     }
 
     // minutes
     diff = Math.floor(diff / 60);
 
     if (diff < 60) {
-        return diff + " minutes ago";
+        unity = "minute";
+    } else {
+
+        // hours
+        diff = Math.floor(diff / 60);
+
+        if (diff < 24) {
+            unity = "hour";
+        } else {
+
+            // days
+            diff = Math.floor(diff / 24);
+
+            unity = "day";
+        }
     }
 
-    // hours
-    diff = Math.floor(diff / 60);
-
-    if (diff < 60) {
-        return diff + " hours ago";
+    if (diff < 1) {
+        diff = 1;
+    } else if (diff > 1) {
+        unity += "s";
     }
 
-    // days
-    return Math.floor(diff / 24) + " days ago";
+    return `${diff} ${unity} ago`;
 };
 %>
 
 <div class="container">
+    <div class="row">
+    <div class="col-lg-5 d-none d-lg-block">
+        <div class="card" style="margin-top: 5vh;">
+            <div class="card-body">
+                <h5 class="card-title">Trending Clucks</h5>
+                <% hashes.forEach(function (hs) { %>
+                <p class="card-text"><%= hs.tag %> • <%= hs.occurrences %></p>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7">
     <% clucks.forEach(function (cluck) { %>
     <div class="card" style="margin-top: 5vh;">
         <div class="card-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-1">
-                        <img src="https://i.imgur.com/sO0CL70.gif" style="width: 100%;">
+                    <div class="col-2" style="text-align: center;">
+                        <img src="https://i.imgur.com/sO0CL70.gif" style="width: 100%; max-width: 100px;">
                     </div>
-                    <div class="col-11">
+                    <div class="col-10">
                         <strong><%= cluck.username %> • <%= timeSince(cluck.created_at) %></strong>
                         <p><%= cluck.content %></p>
                         <% if (cluck.image !== "") { %><img src="<%= cluck.image_url %>" style="width: 100%; max-width: 500px;"><% } %>
@@ -51,6 +75,7 @@ const timeSince = function (dateStr) {
         </div>
     </div>
     <% }); %>
+    </div>
 </div>
 
 <%- include("../partials/footer.ejs") %>
